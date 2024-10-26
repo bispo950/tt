@@ -1,0 +1,842 @@
+
+<!DOCTYPE html><html lang="pt-br"><head>
+    <title>Brasil Ticket</title>
+    <link rel="icon" href="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-specific/brticket/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-specific/brticket/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/_bundle.css">
+    <link rel="stylesheet" href="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-specific/brticket/_18d_bundle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;700&amp;display=swap" rel="stylesheet">
+    <link href="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/fonts/fontawesome/css/all.min.css" rel="stylesheet">
+
+    
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(
+            window,
+            document,
+            'script',
+            'dataLayer',
+            'GTM-M85KVZJ'
+        );
+    </script>
+    <!-- End Google Tag Manager -->
+
+</head>
+    <body>
+        <header>
+    
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M85KVZJ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="accessibility-bar">
+    <div class="container">
+        <a class="accessibility-screen-reader" href="/" accesskey="1">Ir para a home [1]</a>
+        <a class="accessibility-screen-reader" href="#accessibility-content" accesskey="2">Ir para o conteúdo [2]</a>
+        <a class="accessibility-screen-reader" href="#accessibility-footer" accesskey="3">Ir para o rodapé [3]</a>
+        <div class="contrast-container">
+            <span>Contraste</span>
+            <a href="javascript:void(0)" id="contrast-on" class="contrast-on" title="Visualização com alto contraste">Alto contraste</a>
+            <a href="javascript:void(0)" id="contrast-off" class="contrast-off" title="Visualização sem contraste">Sem contraste</a>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('contrast-on').addEventListener('click', () => {
+        addHighContrastStyle();
+        localStorage.setItem('highContrast', true);
+    });
+
+    document.getElementById('contrast-off').addEventListener('click', () => {
+        const highContrast = document.getElementById("highContrast");
+        if (!highContrast) return;
+
+        highContrast.remove();
+        localStorage.removeItem('highContrast');
+    });
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        if (localStorage.getItem('highContrast')) addHighContrastStyle();
+    });
+
+    function addHighContrastStyle() {
+        if (document.getElementById("highContrast")) return;
+
+        const link = document.createElement('link');
+        link.id = "highContrast";
+        link.rel = 'stylesheet';
+        link.href = 'https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/high-contrast.css';
+        document.body.appendChild(link);
+    }
+</script>
+
+    <div class="header-content content-container">
+    <div class="header-part menu-anchor">
+        <div class="header-part-container">
+            <button id="mainMenu" type="button" class="button-content-only" title="Menu">
+                <svg width="20" height="20">
+                    <rect x="0" y="0" width="100%" height="16%" fill="#FFF" rx="0"></rect>
+                    <rect x="0" y="40%" width="100%" height="16%" fill="#FFF" rx="0"></rect>
+                    <rect x="0" y="80%" width="100%" height="16%" fill="#FFF" rx="0"></rect>
+                </svg>
+            </button>
+            <nav class="main-menu">
+                <ul>
+                    <li id="menuLinkTemplate" style="display:none">
+                        <a href="$">
+                            <i aria-hidden="true" class="fa"></i>
+                            <span>Cesta de compras</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="header-part">
+        <a class="header-home-link" href="/"></a>
+    </div>
+    <div class="header-part search">
+        <div class="header-part-container">
+            <input id="searchQuery" placeholder="Encontre aqui">
+            <button type="button" id="searchButton" class="button-content-only" title="Buscar eventos">
+                <i aria-hidden="false" class="fa fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setupHeaderMain(globalConfig) {
+        document.querySelector('#mainMenu').addEventListener('click', () => {
+            document.querySelector('.main-menu').classList.toggle('open');
+        });
+
+        const template = document.getElementById('menuLinkTemplate');
+        const container = document.querySelector('.main-menu');
+
+        if (globalConfig.headerLogoImage) {
+            document.querySelector('.header-content').style.backgroundImage = `url('${globalConfig.headerLogoImage.imageUrl}')`;
+        }
+
+        if (globalConfig.enableEventsSearch) {
+            document.querySelector('.header-part.search').style.display = 'flex';
+        }
+
+        for (const link of globalConfig.menuLinks) {
+            const item = template.cloneNode(true);
+            item.style.display = 'block';
+
+            item.querySelector('a').href = link.url;
+            item.querySelector('i').classList.add(...link.icon.split(' '));
+            item.querySelector('span').innerText = link.text;
+
+            container.appendChild(item);
+        }
+    }
+</script>
+    <div class="header-category" style="display:none">
+</div>
+<script>
+    let ignoreMouseLeave = false;
+
+    function createCategoriesBar(categories) {
+        if (!categories || categories.length == 0) {
+            return;
+        }
+
+        const categoryContainer = document.querySelector('.header-category');
+        categoryContainer.style.display = 'flex';
+
+        createCategoriesScreenLinks(categories, categoryContainer);
+    }
+
+    function createCategoriesScreenLinks(categories, categoryContainer) {
+
+        const categoryMenu = document.createElement('div');
+        categoryMenu.classList.add('header-category-view');
+        
+        for (let i = 0; i < categories.length && i < 5; i++) {
+            const category = categories[i];
+            const hasSubcategories = category.subcategories?.length > 0;
+
+            const categoryItem = document.createElement('a');
+            categoryItem.classList.add('header-category-item');
+
+            if (!hasSubcategories) {
+                categoryItem.href = category.url;
+            }
+
+            const span = document.createElement('span');
+            span.innerText = category.text;
+            categoryItem.appendChild(span);
+
+            if (hasSubcategories) {
+                const icon = document.createElement('i');
+                icon.classList.add('fa', 'fa-solid', 'fa-chevron-down', 'menu-submenu-icon');
+                categoryItem.appendChild(icon);
+
+                createSubcategoriesMenu(categoryItem, category, category.subcategories);
+            }
+            
+            categoryMenu.appendChild(categoryItem);
+        }
+        
+        categoryMenu.appendChild(createScreenOtherCategoriesMenu(categories));
+        categoryContainer.appendChild(categoryMenu);
+    }
+
+    function createSubcategoriesMenu(containerElement, parentCategory, categories, existNavigationElement = false) {
+        
+        const ul = document.createElement('ul');
+
+        if (!existNavigationElement) {
+            const nav = document.createElement('nav');
+            nav.classList.add('category-menu');
+            
+            nav.appendChild(ul);
+            containerElement.appendChild(nav);
+        }
+        else
+        {
+            ul.classList.add(
+                'category-menu',
+                'subcategory-menu-position'
+            );
+
+            containerElement.appendChild(ul);
+        }
+
+        const liHeader = document.createElement('li');
+        liHeader.classList.add('submenu-header');
+
+        const aPrevious = document.createElement('a');
+        aPrevious.classList.add('submenu-header-title');
+        
+        const iPrevious = document.createElement('i');
+        iPrevious.classList.add('fa', 'fa-arrow-left', 'submenu-header-icon');
+
+        const spanPrevious = document.createElement('span');
+        spanPrevious.innerText = parentCategory.text;
+
+        aPrevious.appendChild(iPrevious);
+        aPrevious.appendChild(spanPrevious);
+
+        aPrevious.addEventListener('click', () => {
+            event.stopPropagation();
+
+            const baseElement = aPrevious.closest('.category-menu.open');
+            baseElement.classList.remove('open');
+            const previousElement = baseElement.closest('.category-menu.open');
+            previousElement?.classList.remove('removed-style');
+        });
+
+        const aShowAll = document.createElement('a');
+        aShowAll.classList.add('submenu-header-show-all');
+        aShowAll.innerText = 'Ver tudo';
+        aShowAll.href = parentCategory.url;
+
+        liHeader.appendChild(aPrevious);
+        liHeader.appendChild(aShowAll);
+        ul.appendChild(liHeader);
+        
+        for (let i = 0; i < categories?.length; i++) {
+
+            ul.appendChild(createScreenMenuItem(i, categories[i], null));
+        }
+
+        containerElement.addEventListener('click', (self) => onCategoryAction(self.currentTarget, !existNavigationElement));
+
+        if (!existNavigationElement) {
+            containerElement.addEventListener('mouseover', (self) => onCategoryAction(self.currentTarget, !existNavigationElement, true));
+            containerElement.addEventListener('mouseleave', (self) => onCategoryLeaveAction(self.currentTarget));
+        }
+    }
+
+    function onCategoryLeaveAction(component) {
+        event.stopPropagation();
+
+        if (window.innerWidth <= 700) { //Is a mobile screen and MouseOver handle as click
+            return;
+        }
+
+        if (ignoreMouseLeave) {
+            return;
+        }
+
+        const baseElement = component.querySelector('nav') ?? component.querySelector('ul');
+        const isOpened = baseElement.classList.contains('open');
+
+        if (!isOpened)
+        {
+            return;
+        }
+    
+        clearMenuTempClasses();
+    }
+
+    function onCategoryAction(component, isHeaderCategoryItem, isMouseOverEvent) {
+
+        event.stopPropagation();
+        const baseElement = component.querySelector('nav') ?? component.querySelector('ul');
+        const isOpened = baseElement.classList.contains('open');
+        const isMobileScreen = window.innerWidth <= 700; //Is a mobile screen and MouseOver handle as click
+
+        if (isMouseOverEvent) {
+            if (isOpened) {
+                return;
+            }
+
+            if (isMobileScreen) { 
+                return;
+            }
+        }
+        
+        if (isHeaderCategoryItem) {
+            clearMenuTempClasses();
+
+            if (isOpened) {
+                return;
+            }
+        }
+        else
+        {
+            if (!isMobileScreen) { 
+                ignoreMouseLeave = true;
+                setTimeout(() => {
+                    ignoreMouseLeave = false;
+                }, 500);
+            }
+        }
+        
+        baseElement.classList.toggle('open');
+        baseElement.classList.add('menu-current-temp');
+
+        const menuOpenedElements = document.querySelectorAll('.category-menu.open:not(.menu-current-temp)');
+        
+        for (let i = 0; i < menuOpenedElements.length; i++) {
+            const menuOpenedElement = menuOpenedElements[i];
+                        
+            if (!menuOpenedElement.classList.contains('removed-style')) {
+                menuOpenedElement.classList.add('removed-style');
+            }
+        }
+        
+        baseElement.classList.remove('menu-current-temp');
+    }
+
+    function createScreenOtherCategoriesMenu(categories) {
+
+        const nav = document.createElement('nav');
+        nav.classList.add('category-menu');
+        const ul = document.createElement('ul');
+
+        for (let i = 0; i < categories.length; i++) {
+
+            ul.appendChild(createScreenMenuItem(i, categories[i], 
+                (categoryIndex, li) => {
+                    if (categoryIndex < 5) {
+                        li.style.display = 'none';
+                        li.classList.add('category-menu-main-items-' + (i + 1));
+                    }
+                }));
+        }
+
+        nav.appendChild(ul);
+
+        const othersCategoryMenu = document.createElement('div');
+        othersCategoryMenu.classList.add('header-category-list-menu');
+
+        if (categories.length <= 5) {
+            othersCategoryMenu.style.display = 'none';
+        }
+
+        othersCategoryMenu.addEventListener('click', () => {
+            const currentContainer = document.querySelector('.header-category-list-menu');
+            onCategoryAction(currentContainer, true, false);
+        });
+
+        othersCategoryMenu.addEventListener('mouseover', () => {
+            const currentContainer = document.querySelector('.header-category-list-menu');
+            onCategoryAction(currentContainer, true, true);
+        });
+
+        othersCategoryMenu.addEventListener('mouseleave', () => {
+            const currentContainer = document.querySelector('.header-category-list-menu');
+            onCategoryLeaveAction(currentContainer);
+        });
+
+        const categoryMenuWebText = document.createElement('span');
+        categoryMenuWebText.innerText = "OUTRAS CATEGORIAS";
+        categoryMenuWebText.classList.add('category-menu-web-other-categories');
+
+        const categoryMenuWebIcon = document.createElement('i');
+        categoryMenuWebIcon.classList.add('fa', 'fa-solid', 'fa-chevron-down', 'category-menu-web-other-categories', 'category-menu-web-other-categories-icon');
+
+        const categoryMenuMobileText = document.createElement('span');
+        categoryMenuMobileText.innerText = "...mais";
+        categoryMenuMobileText.classList.add('category-menu-mobile-other-categories');
+
+        othersCategoryMenu.appendChild(categoryMenuWebText);
+        othersCategoryMenu.appendChild(categoryMenuWebIcon);
+        othersCategoryMenu.appendChild(categoryMenuMobileText);
+        othersCategoryMenu.appendChild(nav);
+
+        return othersCategoryMenu;
+    }
+
+    function createScreenMenuItem(categoryIndex, category, liHandler) {
+        const hasSubcategories = category.subcategories?.length > 0;
+        const li = document.createElement('li');
+            
+        if (liHandler) {
+            liHandler(categoryIndex, li);
+        }
+            
+        const a = document.createElement('a');
+
+        if (!hasSubcategories){
+            a.href = category.url;
+        }
+
+        const i = document.createElement('i');
+        i.classList.add('fa', 'fa-chevron-right', 'menu-submenu-right-icon');
+
+        const span = document.createElement('span');
+        span.innerText = category.text;
+        a.appendChild(span);
+
+        if (hasSubcategories) {
+            a.appendChild(i);
+        }
+
+        li.appendChild(a);
+
+        if (hasSubcategories) {
+            createSubcategoriesMenu(li, category, category.subcategories, true)
+        }
+
+        return li;
+    }
+
+    function clearMenuTempClasses() {
+        const elements = document.querySelectorAll('.category-menu');
+
+        for (const element of elements) {
+            if (element.classList.contains('open')) {
+                element.classList.remove('open');
+            }
+
+            if (element.classList.contains('removed-style')) {
+                element.classList.remove('removed-style');
+            }
+        }
+    }
+</script>
+</header>
+
+<!--
+    Because the header floats (with `position: fixed`), it does not have the
+    correct height. This placeholder will have exactly the same height as
+    the real header.
+ -->
+ <div id="header-placeholder"></div>
+ <script>
+    (() => {
+        fetch('/global.json').then(r => r.json()).then(g => {
+            setupHeaderMain(g);
+            createCategoriesBar(g.categories);
+            setPlaceholderHeight();
+        });
+
+        function setPlaceholderHeight() {
+            const header = document.querySelector('header');
+            const placeholder = document.getElementById('header-placeholder');
+
+            placeholder.style.height = header.getBoundingClientRect().height + 'px';
+        }
+    })();
+ </script>
+
+
+        <main id="accessibility-content" title="">
+            
+
+            
+                <img class="banner" src="https://brasilticket.com.br/images/uploads/2024_10/FilipeRET_banner_617aa799df734b0cbafa52bee0f26947.webp" title="imagem com logo do evento">
+            
+
+            <!--
+                The title is empty here so that the <main> title does not keep
+                being shown inside the content box.
+            -->
+            <article class="content-container" title="">
+                <div class="event-details">
+                    
+
+
+                    <div class="column">
+                        
+                            <div id="performancemultiplacemaisfiliperetturne-apresentacao" class="main-block performance">
+
+    <div class="performance-head">
+        <div class="performance-name">MULTIPLACE MAIS | FILIPE RET TURNÊ FRXV</div>
+
+        <div class="performance-info">
+            <div class="performance-main-info">
+                
+                    <div class="performance-info-data">
+                        <i aria-hidden="false" class="fa-regular fa-calendar"></i>
+                        Sexta - Feira | 03/01/2025
+                    </div>
+                
+
+                
+                    <div class="performance-info-data">
+                        <i aria-hidden="false" class="fa-regular fa-clock"></i>
+                        22h00
+                    </div>
+                
+
+                
+            </div>
+
+            <div class="performance-location">
+                
+                    <div class="performance-info-data">
+                        <i aria-hidden="false" class="fa fa-house"></i>
+                        MULTIPLACE MAIS
+                    </div>
+                
+
+                
+                    <div class="performance-info-data">
+                        <i aria-hidden="false" class="fa fa-location-dot"></i>
+                         R. A, 09 - Meaípe, Guarapari/ES
+                    </div>
+                
+
+                
+                    <div class="performance-info-data">
+                        <i aria-hidden="false" class="fa-regular fa-map"></i>
+                        Guarapari/ES
+                    </div>
+                
+            </div>
+
+            <div class="performance-action">
+                <a href="https://q2ingressos.com.br/multiplace-mais-filipe-ret-turne-frxv-multiplace-mais" class="performance-buy-button" style="background-color: #64c464;">
+                    <i aria-hidden="true" class="fa fa-cart-shopping"></i>
+                    <span>COMPRAR</span>
+                </a>
+                <a href="javascript:void(0)" class="performance-info-link info-prices">
+                    INFORMAÇÕES E PREÇOS
+                </a>
+            </div>
+        </div>
+
+        
+
+    </div>
+
+    <div class="performance-content">
+
+        
+            <div class="performance-panel performance-highlight-box">
+                <div>
+                    <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <p><strong>Horário de Abertura:</strong>&nbsp;22h00</p>
+
+                </div>
+            </div>
+        
+
+        
+            <div class="performance-panel performance-highlight-box">
+                <div>
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <p><strong>Classificação Etária:</strong> 16&nbsp;anos.</p>
+
+                </div>
+            </div>
+        
+
+        <p><img alt="" src="https://brasilticket.com.br/images/uploads/2024_10/mapa_camarote1_418ddc14bf1a4ee0b9cd25221fb3a5bb.webp"></p>
+
+
+        <p style="text-align: center;">&nbsp;</p>
+
+<p style="text-align: center;"><strong>Filipe Ret + Caio Luccas</strong></p>
+
+<p style="text-align: center;">O maior fenômeno do Verão 2024 está de volta! Depois de explodir o palco no Rock in Rio, Filipe Ret volta ao Multiplace Mais com a turnê de lançamento do DVD FRXV.&nbsp;<br>
+Essa noite vai entrar pra história da sua vida.&nbsp;</p>
+
+<p style="text-align: center;"><strong>Caio Luccas</strong><br>
+Cria de Belford Roxo, na igreja aprendeu a estar próximo a música, mas na rua, escola e em casa começou a rimar. Fazendo seu corre do jeito limpo e fiel. ESQUECE !!!</p>
+
+<p style="text-align: center;"><img alt="" src="https://showare-cdn.s3.amazonaws.com/brticket/images/Banner/verifique2.gif?v=20221208140108"></p>
+
+
+        
+
+        
+
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const performance = document.getElementById('performancemultiplacemaisfiliperetturne-apresentacao');
+
+            performance.querySelector('.info-prices').addEventListener('click', highlight);
+
+            const contentDisplay = performance.style.display;
+
+            function highlight() {
+                const performances = document.querySelectorAll('.performance');
+
+                for (const p of performances) {
+                    p.querySelector('.performance-content').style.display = 'none';
+                    p.style.opacity = '0.5';
+                }
+
+                performance.querySelector('.performance-content').style.display = contentDisplay;
+                performance.style.opacity = '1';
+                performance.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            const seatsMap = performance.querySelector('.performance-seats-map');
+            if (seatsMap) {
+                performance
+                    .querySelector('.seats-map')
+                    .addEventListener('click', () => {
+                        seatsMap.style.display = 'flex';
+                    });
+
+                seatsMap
+                    .querySelector('.performance-seats-map-close')
+                    .addEventListener('click', () => seatsMap.style.display = 'none');
+
+                //Closes the modal when the user clicks outside
+                seatsMap.addEventListener('click', e => {
+                    if (e.target === seatsMap)
+                        seatsMap.style.display = 'none'
+                });
+
+                //Closes the modal when the user presses Esc
+                document.addEventListener('keydown', e => {
+                    if (e.key === 'Escape')
+                        seatsMap.style.display = 'none'
+                });
+            }
+        });
+    </script>
+</div>
+                        
+
+                        
+                    </div>
+
+                    <div class="column">
+                        
+                            <div class="widget">
+                                <div class="widget-title">
+                                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                                    Ponto de Venda
+                                </div>
+                                <div class="widget-content">
+                                    <p><strong>&nbsp;COUNTRY VILLE&nbsp;</strong><br>
+Endereço: Av.&nbsp;Expedido Garcia,&nbsp;197, Campo Grande -&nbsp;Cariacica/ES<br>
+<u>(ponto de venda&nbsp;<em>sem</em>&nbsp;cobrança de taxa de serviço)</u></p>
+
+<p><strong>MOVE ON&nbsp; - SHOPPING VITÓRIA&nbsp;</strong><br>
+Endereço: Av. Américo Buaiz, 200 - Enseada do Suá, Vitória/ES</p>
+
+                                </div>
+                            </div>
+                        
+                            <div class="widget">
+                                <div class="widget-title">
+                                    <i class="" aria-hidden="true"></i>
+                                    PAGUE COM:
+                                </div>
+                                <div class="widget-content">
+                                    <p><img alt="" src="https://showare-cdn.s3.amazonaws.com/brticket/images/Banner/pagamento3.gif"><br>
+<img alt="" src="https://brasilticket.com.br/images/uploads/2023_10/pagueemate6x-02-02_56dfbf8be5744d269d8587853379d944.webp"></p>
+
+                                </div>
+                            </div>
+                        
+                            <div class="widget">
+                                <div class="widget-title">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    E-TICKET HOME
+                                </div>
+                                <div class="widget-content">
+                                    <p style="text-align: center;"><img alt="" src="https://showare-cdn.s3.amazonaws.com/brticket/images/Section/ETICKET-SITE.gif"><br>
+<span style="color:#ffffff;">.</span><br>
+<strong>E-Ticket home</strong>&nbsp;é a modalidade onde você&nbsp;tem acesso ao seu ingresso logo após concluir a compra, não havendo necessidade de trocas&nbsp;antecipadas na bilheteria. Você pode apresenta-los no dia do evento de duas maneiras:<br>
+<span style="color:#ffffff;">.</span><br>
+• <strong>E-Ticket home (Digital):&nbsp;</strong>Apresentando o arquivo na tela do seu celular.&nbsp;<br>
+<em>Para ter acesso o seu ingresso, basta entrar no site da BrasilTicket e clicar no campo "Minha Conta". Após inserir o seu login e senha cadastrados em nosso site, clique na seta ao lado do seu nome no canto superior direito da tela e depois clique em "Meus Eventos".</em><br>
+<span style="color:#ffffff;">.</span><br>
+• <strong>E-Ticket home (Impresso) : </strong>Imprimindo&nbsp;o seu ingresso numa folha A4 ou ofício (colorido ou preto e branco)<br>
+<span style="color:#ffffff;">.</span><br>
+Lembrando que esse ingresso é pessoal e intransferível e não pode ser impresso mais de uma vez ou fotocopiado, pois cada código barras é único, ou seja, só libera uma entrada!<br>
+<span style="color:#ffffff;">.</span></p>
+
+                                </div>
+                            </div>
+                        
+                            <div class="widget">
+                                <div class="widget-title">
+                                    <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                                    Informações Importantes
+                                </div>
+                                <div class="widget-content">
+                                    <p>•&nbsp;<strong>SEU INGRESSO É ÚNICO E PESSOAL.&nbsp;</strong>A BrasilTicket não se responsabiliza sob hipótese nenhuma, por ingressos adquiridos fora dos canais de venda oficiais: bilheteria, pontos de venda e site da BrasilTicket.</p>
+
+<p>•&nbsp;A <strong>Brasil Ticket</strong>&nbsp;não se responsabiliza pela realização, cancelamento ou&nbsp;adiamento deste evento. O&nbsp;promotor ou realizador do evento é o único e exclusivo responsável, bem como pela eventual troca ou restituição do valor de face do ingresso. A Brasil Ticket é contratada por esses promotores ou realizadores de evento para comercializar e distribuir ingressos.</p>
+
+                                </div>
+                            </div>
+                        
+                    </div>
+
+                </div>
+            </article>
+        </main>
+
+        <footer id="accessibility-footer">
+    <div class="footer-content content-container">
+        <div class="footer-company">
+            <div class="footer-company-images-row">
+                <a id="footerLogoLink">
+                    <img class="footer-logo">
+                </a>
+                <div class="footer-store-badges">
+                    <a class="apple-store-badge-link" target="_blank">
+                        <img src="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/images/apple-store-badge.png">
+                    </a>
+                    <a class="google-play-badge-link" target="_blank">
+                        <img src="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/images/google-play-badge.png">
+                    </a>
+                </div>
+            </div>
+            <p id="footer-descriptive-text"></p>
+            
+            <p class="footer-mobile-store-badges">
+                <a class="apple-store-badge-link" target="_blank">
+                    <img src="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/images/apple-store-badge.png">
+                </a>
+                <a class="google-play-badge-link" target="_blank">
+                    <img src="https://showare-prod-splash-static.s3.sa-east-1.amazonaws.com/code/splash-models/18d/images/google-play-badge.png">
+                </a>
+            </p>
+        </div>
+        <div class="footer-menu">
+            <ul></ul>
+        </div>
+    </div>
+    <div class="lgpd-container" style="display: none">
+    <div class="lgpd-container-text"></div>
+    <div class="lgpd-container-button">
+        <button id="btnLgptCookieOk" type="button">OK</button>
+    </div>
+</div>
+<script>
+    fetch('/global.json').then(res => res.json()).then(global => {
+        if (global.privacyCookiesBannerText != undefined) {
+            document.getElementsByClassName("lgpd-container-text")[0].innerHTML = global.privacyCookiesBannerText;
+
+            const lgpdAcceptedKey = "showare-splash-accepted-lgpd-container";
+
+            if (!localStorage.getItem(lgpdAcceptedKey)) {
+                document.getElementsByClassName("lgpd-container")[0].style.display = "flex";
+            }
+
+            let btnOk = document.getElementById("btnLgptCookieOk");
+
+            if (global.privacyCookiesBannerOkButtonColor != undefined) {
+                btnOk.style.backgroundColor = global.privacyCookiesBannerOkButtonColor;
+            }
+
+            btnOk.onclick = function () {
+                localStorage.setItem(lgpdAcceptedKey, true);
+                document.getElementsByClassName("lgpd-container")[0].style.display = "none";
+            };
+        }
+    });
+</script>
+    <script>
+        fetch('/global.json').then(res => res.json()).then(g => {
+            const container = document.querySelector('footer .footer-menu ul');
+            
+            if (g.footerLogoImage) {
+                const footerLogo = document.querySelector('.footer-logo');
+                footerLogo.src = g.footerLogoImage.imageUrl;
+                footerLogo.title = g.footerLogoImage.altText;
+
+                document.getElementById('footerLogoLink').href = g.footerLogoImage.linkUrl || '';
+            }
+			
+			if (g.appleStoreBadgeLink && g.appleStoreBadgeLink.url) {
+                const appleStoreBadgeLinks = document.querySelectorAll('.apple-store-badge-link');
+
+                appleStoreBadgeLinks.forEach(appleStoreBadgeLink => {
+                    appleStoreBadgeLink.style.display = 'block';
+                    appleStoreBadgeLink.href = g.appleStoreBadgeLink.url;
+                    appleStoreBadgeLink.title = g.appleStoreBadgeLink.title ? g.appleStoreBadgeLink.title : "Link do aplicativo na Apple Store";
+                });
+            }
+
+			if (g.googlePlayBadgeLink && g.googlePlayBadgeLink.url) {
+                const googlePlayBadgeLinks = document.querySelectorAll('.google-play-badge-link');
+
+                googlePlayBadgeLinks.forEach(googlePlayBadgeLink => {
+                    googlePlayBadgeLink.style.display = 'block';
+                    googlePlayBadgeLink.href = g.googlePlayBadgeLink.url;
+                    googlePlayBadgeLink.title = g.googlePlayBadgeLink.title ? g.googlePlayBadgeLink.title : "Link do aplicativo no Google Play";
+                });
+            }
+
+            if (g.descriptiveText) {
+                const descriptiveText = document.querySelector('#footer-descriptive-text');
+				descriptiveText.innerHTML = g.descriptiveText;
+            }
+
+            for (const link of g.footerLinks) {
+                const li = document.createElement('li');
+
+                const a = document.createElement('a');
+                a.href = link.url;
+
+                const icon = document.createElement('i');
+                icon.setAttribute('aria-hidden', 'true');
+                icon.className = 'fa ' + link.icon;
+
+                const text = document.createTextNode(link.text);
+
+                a.appendChild(icon);
+                a.appendChild(text);
+                li.appendChild(a);
+                container.appendChild(li);
+            }
+        });
+    </script>
+</footer>
+    
+</body></html>
